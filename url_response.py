@@ -1,8 +1,8 @@
 import urllib.request
 
-url = 'https://www.baidu.com'
-url2= 'https://asdasds.com'
+url = 'http://172.16.32.252/'
+url2= 'http://172.16.32.252/get/1'
 
-response = urllib.request.urlopen(url)
+response = urllib.request.urlopen(url2)
 
 print(response.read().decode())
