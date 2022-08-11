@@ -23,3 +23,18 @@ def get_vs1():
     #print(befehl)
     response = urllib.request.urlopen(befehl)
     return response.read().decode()
+
+class PIConnet(ip):
+
+    def __init__(self):
+        self.default_url = 'http://'+url_ip+'/'
+
+    def conn_test(self):
+        url_response = urllib.request.urlopen(self.default_url)
+        code = url_response.getcode()
+        if code == 200:
+            print("connection successful ")
+        else:
+            print("connection failed")
+
+
