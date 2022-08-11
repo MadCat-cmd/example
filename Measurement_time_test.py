@@ -42,7 +42,6 @@ conn_test()
 set_vs1(5000)
 print('Messung: ' + get_vs1())
 
-
 time_start = time.time()
 for (ii, val) in enumerate(input_value):
     set_vs1(val)
