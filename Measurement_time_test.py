@@ -21,6 +21,8 @@ pcx.setlevel('vs1', 1)
 val = pcx.measure('vs1', 'i')
 print(val)
 
+print('input length: %d' %(len(input_value)))
+
 
 for (ii, val) in enumerate(input_value):
     pcx.setlevel('vs1', val)
@@ -34,9 +36,22 @@ print('whole process time old: %f' %(process_ende_time-process_start_time))
 print('wohle time old: %d' %(time_ende - time_start))
 
 
+conn_test()
+
+
+set_vs1(5000)
+print('Messung: ' + get_vs1())
+
+
+time_start = time.time()
 for (ii, val) in enumerate(input_value):
     set_vs1(val)
     mess_value[ii] = get_vs1()
+
+time_ende = time.time()
+
+print("Measurement Function time new: %f" %(time_ende - time_start))
+
 
 plt.figure(1, (4,3))
 plt.plot(input_value, mess_value)
