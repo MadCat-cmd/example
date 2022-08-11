@@ -24,10 +24,10 @@ def get_vs1():
     response = urllib.request.urlopen(befehl)
     return response.read().decode()
 
-class PIConnet(ip):
+class PIConnet():
 
-    def __init__(self):
-        self.default_url = 'http://'+url_ip+'/'
+    def __init__(self, ip):
+        self.default_url = 'http://'+ip+'/'
 
     def conn_test(self):
         url_response = urllib.request.urlopen(self.default_url)
