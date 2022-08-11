@@ -4,6 +4,7 @@ import urllib.request
 url_ip = '172.16.32.252'
 url_str = 'http://172.16.32.252/'
 
+
 #print('val: ' + str(val))
 
 def conn_init(ip, url_str):
