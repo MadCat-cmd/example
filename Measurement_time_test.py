@@ -56,8 +56,15 @@ plt.figure(1, (4,3))
 plt.plot(input_value, mess_value)
 plt.show()
 
+pcx = PIConnet("172.16.32.252")
 
+time_start = time.time()
+for (ii, val) in enumerate(input_value):
+    pcx.set_value(val)
+    mess_value[ii] = pcx.get_value()
 
+time_ende = time.time()
+print("Measurement Object time new: %f" %(time_ende - time_start))
 
 
 
