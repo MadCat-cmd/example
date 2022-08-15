@@ -82,19 +82,21 @@ class PIConnet():
 
     def set_get_value(self, channel, value):
         command_send = self.default_url + "set" + self.channel[channel]["set"] + "=" + str(value)
-        command_recv = self.default_url + "set" + self.channel[channel]["get"]
+        command_recv = self.default_url + "get" + self.channel[channel]["get"]
         urllib.request.urlopen(command_send)
         response = urllib.request.urlopen(command_recv)
         return int(response.read().decode())
 
     def channel_sweep(self, channel, v_value):
         mess_value = np.zeros(len(v_value))
+        print("len v_value: %d" %(len(v_value)))
+        print(v_value)
         command_send = self.default_url + "set" + self.channel[channel]["set"] + "="
-        command_recv = self.default_url + "set" + self.channel[channel]["get"]
+        command_recv = self.default_url + "get" + self.channel[channel]["get"]
 
         for (ii, val) in enumerate(v_value):
             urllib.request.urlopen(command_send + str(val))
             response = urllib.request.urlopen(command_recv)
             mess_value[ii] = int(response.read().decode())
 
-            return mess_value
+        return mess_value
