@@ -89,8 +89,6 @@ class PIConnet():
 
     def channel_sweep(self, channel, v_value):
         mess_value = np.zeros(len(v_value))
-        print("len v_value: %d" %(len(v_value)))
-        print(v_value)
         command_send = self.default_url + "set" + self.channel[channel]["set"] + "="
         command_recv = self.default_url + "get" + self.channel[channel]["get"]
 
