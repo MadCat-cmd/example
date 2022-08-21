@@ -98,3 +98,73 @@ class PIConnet():
             mess_value[ii] = int(response.read().decode())
 
         return mess_value
+
+
+class PIConnect2():
+    def __init__(self, ip):
+        self.default_url = 'http://' + ip + '/'
+        self.channel = {"vs1": {"get": "/1", "set": "/2"},
+                        "vs2": {"get": "/3", "set": "/4"},
+                        "vs3": {"get": "/6", "set": "/7"},
+                        "vs4": {"get": "/8", "set": "/9"},
+                        "vs5": {"get": "/11", "set": "/12"},
+                        "vs6": {"get": "/13", "set": "/14"},
+                        "vs7": {"get": "/16", "set": "/17"},
+                        "vs8": {"get": "/18", "set": "/19"}}
+
+        self.channel_cmd = {"vs1": ["get_command_list_vs1", "set_command_list_vs1"]}
+
+        self.get_command_list_vs1 = []
+        self.set_command_list_vs1 = []
+
+    def set_channel_cmd(self, channel, array):
+        self.get_command_list_vs1.clear()
+        self.set_command_list_vs1.clear()
+
+        get_cmd_list = []
+        set_cmd_list = []
+
+        for i in array:
+            set_cmd = self.default_url + "set" + self.channel[channel]["set"] + "=" + str(i)
+            set_cmd_list.append(set_cmd)
+            get_cmd = self.default_url + "get" + self.channel[channel]["get"]
+            get_cmd_list.append(get_cmd)
+
+        setattr(self, "get_command_list_vs1", get_cmd_list)
+        setattr(self, "set_command_list_vs1", set_cmd_list)
+
+    def set_value(self, channel, value):
+        command = self.default_url + "set" + self.channel[channel]["set"] + "=" + str(value)
+        urllib.request.urlopen(command)
+
+    def get_value(self, channel):
+        command = self.default_url + "get" + self.channel[channel]["get"]
+        response = urllib.request.urlopen(command)
+        return int(response.read().decode())
+
+    def channel_sweep(self, channel):
+        set_cmd_list = getattr(self, self.channel_cmd[channel][0])
+        get_cmd_list = getattr(self, self.channel_cmd[channel][1])
+        result_v = np.zeros((len(set_cmd_list),))
+        #print(set_cmd_list)
+        #print(get_cmd_list)
+        for i in range(len(set_cmd_list)):
+            urllib.request.urlopen(set_cmd_list[i])
+            response = urllib.request.urlopen(get_cmd_list[i])
+            result_v[i] = response.read().decode()
+
+        return result_v
+
+
+
+a_array = np.arange(0, 10, 1)
+#print(a_array)
+objtest = PIConnect2(url_ip)
+
+objtest.set_channel_cmd("vs1", a_array)
+#print(objtest.get_command_list_vs1)
+#objtest.channel_sweep("vs1")
+
+b = np.arange(0, 5, 1)
+a = np.zeros((5, ))
+print(a)

@@ -85,3 +85,11 @@ plt.figure(1, (4, 3))
 plt.plot(input_value, mes_vec)
 plt.plot(input_value, mes_value)
 plt.show()
+
+pcx2 = PIConnect2(ip_PIConnet)
+pcx2.set_channel_cmd("vs1", input_value)
+result_array = pcx2.channel_sweep("vs1")
+
+plt.figure(2, (4, 3))
+plt.plot(input_value, result_array)
+plt.show()
