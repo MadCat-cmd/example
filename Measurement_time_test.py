@@ -82,7 +82,6 @@ mes_vec = pcx.channel_sweep("vs1", input_value2)
 time_ende = time.time()
 
 print("new sweep time: %f" %(time_ende - time_start))
-print(mes_vec)
 
 plt.figure(1, (4, 3))
 plt.plot(input_value2, mes_vec)
