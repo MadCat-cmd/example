@@ -9,6 +9,9 @@ from measurement_driver import *
 ip_PIConnet = '172.16.32.252'
 
 input_value = np.arange(0.5, 100.1, 0.5) * 1e-3 #A
+input_value2 = input_value * 1000
+input_value2 = input_value2.astype(int)
+#print(input_value2)
 mes_value = np.zeros(len(input_value))
 
 pcx = HHI_PIConnect(ip_PIConnet)
@@ -19,7 +22,6 @@ process_start_time = time.process_time()
 
 pcx.setlevel('vs1', 1)
 val = pcx.measure('vs1', 'i')
-print(val)
 
 print('input length: %d' %(len(input_value)))
 
@@ -38,7 +40,7 @@ print('time to measure: %d' %(time_ende - time_start))
 
 conn_test()
 
-
+'''
 set_vs1(5000)
 print('Messung: ' + get_vs1())
 
@@ -50,7 +52,7 @@ for (ii, val) in enumerate(input_value):
 time_ende = time.time()
 
 print("Measurement Function time: %f" %(time_ende - time_start))
-
+'''
 
 
 pcx = PIConnet("172.16.32.252")
@@ -76,20 +78,27 @@ print("Measurement Object set_get time new: %f" %(time_ende - time_start))
 
 
 time_start = time.time()
-mes_vec = pcx.channel_sweep("vs1", input_value)
+mes_vec = pcx.channel_sweep("vs1", input_value2)
 time_ende = time.time()
 
 print("new sweep time: %f" %(time_ende - time_start))
+print(mes_vec)
 
 plt.figure(1, (4, 3))
-plt.plot(input_value, mes_vec)
-plt.plot(input_value, mes_value)
+plt.plot(input_value2, mes_vec)
+#plt.plot(input_value2, mes_value)
 plt.show()
 
-pcx2 = PIConnect2(ip_PIConnet)
-pcx2.set_channel_cmd("vs1", input_value)
-result_array = pcx2.channel_sweep("vs1")
 
+pcx2 = PIConnect2(ip_PIConnet)
+pcx2.set_channel_cmd("vs1", input_value2)
+time_start = time.time()
+result_array = pcx2.channel_sweep("vs1")
+time_stop = time.time()
+print("pcx2 sweep: %d" %(time_stop-time_start))
+
+'''
 plt.figure(2, (4, 3))
 plt.plot(input_value, result_array)
 plt.show()
+'''
