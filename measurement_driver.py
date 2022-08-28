@@ -103,6 +103,7 @@ class PIConnet():
 
         for (ii, val) in enumerate(v_value):
             urllib.request.urlopen(command_send + str(val))
+            #print(command_send + str(val))
             response = urllib.request.urlopen(command_recv)
             mess_value[ii] = int(response.read().decode())
 
@@ -178,20 +179,22 @@ class PIConnect2():
         return int(response.read().decode())
 
     def channel_sweep(self, channel):
-        set_cmd_list = getattr(self, self.channel_cmd[channel][0])
-        get_cmd_list = getattr(self, self.channel_cmd[channel][1])
+        set_cmd_list = getattr(self, self.channel_cmd[channel][1])
+        get_cmd_list = getattr(self, self.channel_cmd[channel][0])
         result_v = np.zeros((len(set_cmd_list),))
         #print(set_cmd_list)
         #print(get_cmd_list)
+
         for i in range(len(set_cmd_list)):
             urllib.request.urlopen(set_cmd_list[i])
             response = urllib.request.urlopen(get_cmd_list[i])
-            result_v[i] = response.read().decode()
+            result_v[i] = float(response.read().decode())
 
         return result_v
 
 
 
+'''
 a_array = np.arange(0, 10, 1)
 #print(a_array)
 objtest = PIConnect2(url_ip)
@@ -203,3 +206,4 @@ objtest.set_channel_cmd("vs1", a_array)
 b = np.arange(0, 5, 1)
 a = np.zeros((5, ))
 print(a)
+'''
