@@ -43,7 +43,16 @@ class PIConnet():
                         "vs5": {"get": "/11", "set": "/12"},
                         "vs6": {"get": "/13", "set": "/14"},
                         "vs7": {"get": "/16", "set": "/17"},
-                        "vs8": {"get": "/18", "set": "19"}}
+                        "vs8": {"get": "/18", "set": "/19"},
+                        "cs1": {"get": "/21", "set": "/22"},
+                        "cs2": {"get": "/23", "set": "/24"},
+                        "cs3": {"get": "/25", "set": "/26"},
+                        "cs4": {"get": "/27", "set": "/28"},
+                        "cs5": {"get": "/29", "set": "/30"},
+                        "cs6": {"get": "/31", "set": "/32"},
+                        "cs7": {"get": "/33", "set": "/34"},
+                        "cs8": {"get": "/35", "set": "/36"},
+                        "ld1": {"get": "/5", "set": "/37"}}
 
     def conn_test(self):
         url_response = urllib.request.urlopen(self.default_url)
@@ -98,6 +107,32 @@ class PIConnet():
             mess_value[ii] = int(response.read().decode())
 
         return mess_value
+
+    def multi_channel_sweep(self, channels, value_v):
+
+        channel_list = list(channels)
+        result_list = []
+
+        for (ii, val) in enumerate(value_v):
+            command_send = self.default_url + "set"
+            command_recv = self.default_url + "get"
+            for c in channel_list:
+                command_send = command_send + self.channel[c]["set"] + "=" + str(val)
+                command_recv = command_recv + self.channel[c]["get"]
+            urllib.request.urlopen(command_send)
+            response = urllib.request.urlopen(command_recv)
+            result_str = response.read().decode
+            result_int_list = list(np.fromstring(result_str))
+            result_list.append(result_int_list)
+
+
+
+
+
+
+
+
+
 
 
 class PIConnect2():
