@@ -109,6 +109,9 @@ class PIConnet():
 
         return mess_value
 
+    def multi_channel_set(self, channel, value):
+        pass
+
     def multi_channel_sweep(self, channels, value_v):
 
         channel_list = list(channels)
@@ -126,7 +129,10 @@ class PIConnet():
             result_int_list = list(np.fromstring(result_str))
             result_list.append(result_int_list)
 
+        return_list = np.array(result_list)
+        return_array = np.transpose(return_list)
 
+        return return_array
 
 
 
