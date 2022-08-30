@@ -109,8 +109,25 @@ class PIConnet():
 
         return mess_value
 
-    def multi_channel_set(self, channel, value):
-        pass
+    def multi_channel_set(self, channels, value):
+        channel_list = list(channels)
+
+        command_send = self.default_url + "set"
+        for c in channel_list:
+            command_send = command_send + self.channel[c]["set"] + "=" + str(value)
+        urllib.request.urlopen(command_send)
+
+    def multi_channel_get(self, channels):
+        channel_list = list(channels)
+
+        command_recv = self.default_url + "get"
+        for c in channel_list:
+            command_recv = command_recv + self.channel[c]["get"]
+
+        response = urllib.request.urlopen(command_recv)
+        result_str = response.read().decode()
+
+        return np.fromstring(result_str)
 
     def multi_channel_sweep(self, channels, value_v):
 
