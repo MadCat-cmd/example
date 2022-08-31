@@ -44,6 +44,7 @@ class PIConnet():
                         "vs6": {"get": "/13", "set": "/14"},
                         "vs7": {"get": "/16", "set": "/17"},
                         "vs8": {"get": "/18", "set": "/19"},
+
                         "cs1": {"get": "/21", "set": "/22"},
                         "cs2": {"get": "/23", "set": "/24"},
                         "cs3": {"get": "/25", "set": "/26"},
@@ -52,6 +53,7 @@ class PIConnet():
                         "cs6": {"get": "/31", "set": "/32"},
                         "cs7": {"get": "/33", "set": "/34"},
                         "cs8": {"get": "/35", "set": "/36"},
+
                         "ld1": {"get": "/5", "set": "/37"}}
 
     def conn_test(self):
@@ -103,7 +105,7 @@ class PIConnet():
 
         for (ii, val) in enumerate(v_value):
             urllib.request.urlopen(command_send + str(val))
-            #print(command_send + str(val))
+            # print(command_send + str(val))
             response = urllib.request.urlopen(command_recv)
             mess_value[ii] = int(response.read().decode())
 
@@ -129,6 +131,21 @@ class PIConnet():
 
         return np.fromstring(result_str)
 
+    def multi_channel_set_get(self, channels, value):
+        channel_list = list(channels)
+
+        command_send = self.default_url + "set"
+        command_recv = self.default_url + "get"
+
+        for c in channel_list:
+            command_send = command_send + self.channel[c]["set"] + "=" + str(value)
+            command_recv = command_recv + self.channel[c]["get"]
+
+        urllib.request.urlopen(command_send)
+        response = urllib.request.urlopen(command_recv)
+
+        return np.fromstring(response.read().decode())
+
     def multi_channel_sweep(self, channels, value_v):
 
         channel_list = list(channels)
@@ -150,12 +167,6 @@ class PIConnet():
         return_array = np.transpose(return_list)
 
         return return_array
-
-
-
-
-
-
 
 
 
@@ -205,8 +216,8 @@ class PIConnect2():
         set_cmd_list = getattr(self, self.channel_cmd[channel][1])
         get_cmd_list = getattr(self, self.channel_cmd[channel][0])
         result_v = np.zeros((len(set_cmd_list),))
-        #print(set_cmd_list)
-        #print(get_cmd_list)
+        # print(set_cmd_list)
+        # print(get_cmd_list)
 
         for i in range(len(set_cmd_list)):
             urllib.request.urlopen(set_cmd_list[i])
@@ -214,7 +225,6 @@ class PIConnect2():
             result_v[i] = float(response.read().decode())
 
         return result_v
-
 
 
 '''
