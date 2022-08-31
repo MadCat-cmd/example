@@ -129,7 +129,7 @@ class PIConnet():
         response = urllib.request.urlopen(command_recv)
         result_str = response.read().decode()
 
-        return np.fromstring(result_str)
+        return np.fromstring(result_str,  dtype=int, sep=' ')
 
     def multi_channel_set_get(self, channels, value):
         channel_list = list(channels)
@@ -144,7 +144,7 @@ class PIConnet():
         urllib.request.urlopen(command_send)
         response = urllib.request.urlopen(command_recv)
 
-        return np.fromstring(response.read().decode())
+        return np.fromstring(response.read().decode(), dtype=int, sep=' ')
 
     def multi_channel_sweep(self, channels, value_v):
 
@@ -159,8 +159,9 @@ class PIConnet():
                 command_recv = command_recv + self.channel[c]["get"]
             urllib.request.urlopen(command_send)
             response = urllib.request.urlopen(command_recv)
-            result_str = response.read().decode
-            result_int_list = list(np.fromstring(result_str))
+            result_str = response.read().decode()
+            #print(result_str)
+            result_int_list = list(np.fromstring(result_str,  dtype=int, sep=' '))
             result_list.append(result_int_list)
 
         return_list = np.array(result_list)

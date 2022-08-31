@@ -101,3 +101,4 @@ plt.figure(2, (4, 3))
 plt.plot(input_value, result_array)
 plt.show()
 '''
+

@@ -1,0 +1,69 @@
+import time
+from PIC_Lab_instruments.instruments.sourcemeter import HHI_PIConnect
+import matplotlib.pyplot as plt
+
+from measurement_driver import *
+
+
+ip_PIConnet = '172.16.32.252'
+
+#test of HHI_PIConnect
+pcx = HHI_PIConnect(ip_PIConnet)
+#input_value = np.arange(0.5, 100.1, 0.5) * 1e-3 #A
+input_value = np.arange(0, 5., 0.025) #'* 1e-3 #V
+print("input length: %d" %(len(input_value)))
+#print(input_value)
+
+'''
+#test start
+time_start = time.time()
+
+mes_value = np.zeros(len(input_value))
+
+for (ii, val) in enumerate(input_value):
+    pcx.setlevel('vs1', val)
+    mes_value[ii] = pcx.measure('vs1', 'i')
+
+
+time_ende = time.time()
+
+print('time to measure: %d' %(time_ende - time_start))
+
+plt.figure(1, (4, 3))
+plt.plot(input_value, mes_value)
+plt.title("HHI_PIConnect")
+#plt.plot(input_value2, mes_value)
+plt.show()
+
+#test end
+'''
+
+
+#test PIConnect
+pcx1 = PIConnet(ip_PIConnet)
+input_value2 = np.arange(0, 5000, 25)
+
+'''
+#test start
+time_start = time.time()
+mes_vec = pcx1.channel_sweep("vs1", input_value2)
+time_ende = time.time()
+
+print("time for PIConnect class: %f" %(time_ende-time_start))
+
+plt.figure(1, (4, 3))
+plt.plot(input_value2, mes_vec)
+plt.title("PIConnect")
+#plt.plot(input_value2, mes_value)
+plt.show()
+#test end
+'''
+
+multi_mess_val = pcx1.multi_channel_set_get(("vs1", "vs2", "vs3"), 5000)
+print(multi_mess_val)
+
+pcx1.multi_channel_set(("vs1", "vs2", "vs3"), 3000)
+print(pcx1.multi_channel_get(("vs1", "vs2", "vs3")))
+
+multi_sweep_val = pcx1.multi_channel_sweep(("vs1", "vs2"), input_value2)
+print(multi_sweep_val)
