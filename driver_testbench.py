@@ -122,6 +122,6 @@ for i in range(len(versuch)):
 
     zeit_array3[i] = time_start - time_ende
 
-plt.figure(6, (4, 3))
+fig = plt.figure(6, (4, 3))
 plt.plot(versuch, zeit_array3)
 plt.show()
