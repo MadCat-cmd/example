@@ -72,8 +72,8 @@ print(multi_sweep_val)
 
 # %%
 versuch = np.array([1, 2, 3, 4, 5])
-zeit_array = np.zeros(versuch)
-zeit_array2 = np.zeros(versuch)
+zeit_array = np.zeros(len(versuch))
+zeit_array2 = np.zeros(len(versuch))
 
 for i in range(len(versuch)):
     time_start = time.time()
@@ -90,6 +90,8 @@ for i in range(len(versuch)):
     time_ende = time.time()
 
     zeit_array2[i] = time_ende - time_start
+
+print("finished ")
 
 plt.figure(1, (4, 3))
 plt.plot(versuch, zeit_array, label="obj1")
@@ -113,15 +115,22 @@ print("elapsed time: %d" % (time_ende - time_start))
 # %% multi_channel_sweep time test
 
 versuch = np.array([1, 2, 3, 4, 5])
-zeit_array3 = np.zeros(versuch)
+zeit_array3 = np.zeros(len(versuch))
 
 for i in range(len(versuch)):
     time_start = time.time()
     result_arr = pcx1.multi_channel_sweep(("vs1", "vs2", "vs3"), input_value2)
     time_ende = time.time()
 
-    zeit_array3[i] = time_start - time_ende
+    zeit_array3[i] = time_ende - time_start
 
 fig = plt.figure(6, (4, 3))
 plt.plot(versuch, zeit_array3)
 plt.show()
+
+#%%
+
+versuch = np.array([1, 2, 3, 4, 5])
+zeit_array = np.zeros(len(versuch))
+zeit_array2 = np.zeros(versuch)
+print(zeit_array)
