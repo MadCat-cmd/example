@@ -129,6 +129,7 @@ plt.plot(versuch, zeit_array3)
 plt.show()
 
 #%%
+
 versuch = np.array([1, 2, 3, 4, 5])
 zeit_array = np.zeros(len(versuch))
 zeit_array2 = np.zeros(versuch)
