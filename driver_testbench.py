@@ -113,7 +113,6 @@ for i in range(result_arr.shape[0]):
 print("elapsed time: %d" % (time_ende - time_start))
 
 # %% multi_channel_sweep time test
-
 versuch = np.array([1, 2, 3, 4, 5])
 zeit_array3 = np.zeros(len(versuch))
 
