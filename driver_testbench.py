@@ -10,9 +10,12 @@ ip_PIConnet = '172.16.32.252'
 
 # test of HHI_PIConnect
 pcx = HHI_PIConnect(ip_PIConnet)
+pcx1 = PIConnet(ip_PIConnet)
 # input_value = np.arange(0.5, 100.1, 0.5) * 1e-3 #A
 input_value = np.arange(0, 5., 0.025)  # '* 1e-3 #V
 input_value2 = np.arange(0, 5000, 25)
+
+mes_value = np.zeros(len(input_value)) #Ergebnis abspeichern
 print("input length: %d" % (len(input_value)))
 # print(input_value)
 
@@ -21,7 +24,6 @@ print("input length: %d" % (len(input_value)))
 # test start
 time_start = time.time()
 
-mes_value = np.zeros(len(input_value))
 
 for (ii, val) in enumerate(input_value):
     pcx.setlevel('vs1', val)
@@ -42,7 +44,7 @@ plt.show()
 # %%
 
 # test PIConnect
-pcx1 = PIConnet(ip_PIConnet)
+
 input_value2 = np.arange(0, 5000, 25)
 
 # test start
