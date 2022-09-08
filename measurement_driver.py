@@ -54,7 +54,10 @@ class PIConnet():
                         "cs7": {"get": "/33", "set": "/34"},
                         "cs8": {"get": "/35", "set": "/36"},
 
-                        "ld1": {"get": "/5", "set": "/37"}}
+                        "ld1": {"get": "/5", "set": "/37"},
+                        "ld2": {"get": "/10", "set": "/38"},
+                        "ld3": {"get": "/15", "set": "/39"},
+                        "ld4": {"get": "/20", "set": "/40"}}
 
     def conn_test(self):
         url_response = urllib.request.urlopen(self.default_url)
