@@ -19,12 +19,13 @@ scale_factor = 0.6
 
 #%%access
 
-username = 'hogan'
+#username = 'hogan'
+username = 'chen'
 host = "172.16.29.181"
 name_db='foubase'
 connex = connection.Mysql_Connection(username=username, host=host, name_db=name_db) # OR jones gets his own DB account
-connex.connect("1234")# enter pw here
-
+#connex.connect("1234")# enter pw here
+connex.connect("1q2w3e4r")# enter pw here
 
 #%%define meas params
  
@@ -35,11 +36,13 @@ connex.connect("1234")# enter pw here
 # wafernames = ["MPW22#53", "MPW22#54", "MPW22#55"]
 # wafernames = ["DONNY3#26", "DONNY3#27"]
 wafernames = ["DONNY3#113", "DONNY3#114"]
+wafernames = ['MPW25#101']
 # wafernames = ["LUCA#40", "LUCA#41"]
 # wafernames = ["MPW23#81", "MPW23#84", "MPW23#85"]
 # wafernames = ["MPW24#90", "MPW24#93", "MPW24#94"]
 
 bar = "D_1"#"D_1" # DONNY3 "A_1" #'A_3' #23 #LUCA:"B_9"#22:"A_1" #"D_5" #21: D_4
+bar = "A_3"
 # date = '21-07-15' #'21-03-30' # 21-03-26
 date = ''
 
@@ -52,7 +55,7 @@ device_template["Bar"] = bar
 
 devices_found = devices.get_devices_fromTemplate(device_template, connex)
 
-devices_evaluated = devices.load_evaluations_deviceList_al(connex, devices_found)
+#devices_evaluated = devices.load_evaluations_deviceList_al(connex, devices_found)
 
 devices_measured = devices.load_measurements_deviceList(connex, devices_found)
 
@@ -72,7 +75,7 @@ for dev in devices_measured:
             continue
         
         meas_list.append(meas)
-        
+
         if meas.meas_attrs["MeasurementType"] == "vi":
             if "HEATER" in meas.meas_attrs["Comments"] or max(meas.datasets[0][0]) < 0.055:
                 heater_VIs.append(meas)
@@ -129,6 +132,7 @@ for filename in filenames:
 # wafers= ["MPW23#81", "MPW23#84", "MPW23#85"]
 # wafers = ["MPW24#90", "MPW24#93", "MPW24#94"]
 wafers = ["DONNY3#113", "DONNY3#114"]
+wafers = ["MPW25#101"]
 
 # wafers= ["DONNY3#26", "DONNY3#27"]
 
@@ -156,7 +160,7 @@ for mm, meas in enumerate(VIs):
             color=cm.turbo((round(meas.device['WL_L']*1e9)-1520)/100), 
             label =  f"{round(meas.device['WL_L']*1e9)} nm",
             linewidth = 1) #, label =  f"{int(meas.device['WL_L']*1e6)} nm")
-    
+
     # for vv, data in enumerate(meas.datasets[0][1]):
     #     if vv == len(meas.datasets[0][1]) and abs(data - meas.datasets[0][1][vv-1]) > 0.2:
     #             meas.datasets[0][1][vv] = (meas.datasets[0][1][vv-1] + meas.datasets[0][1][vv-2])/2
@@ -177,10 +181,11 @@ for mm, meas in enumerate(VIs):
     print(eva.eval_attrs['Rs'][0])
     Rs.append(eva.eval_attrs['Rs'][0])
 
-    
+
     # ax_twin.plot(eva.datasets[0][0]*1e3,eva.datasets[0][1],
     #              color=cm.magma((mm)/len(VIs)), linewidth = 2, 
     #              label = f"{np.round(eva.eval_attrs['Rs'][0], 2)} Ω") #label =  f"{int(meas.device['WL_L']*1e6)} nm")
+plt.show()
 
 print("mean:")
 print(np.mean(Rs))
@@ -241,7 +246,7 @@ for mm, meas in enumerate(heater_VIs):
     ax.plot(meas.datasets[0][0]*1e3,meas.datasets[0][1],
             color=cm.turbo((meas.device["WL_L"]*1e9-1500)/100), 
             linewidth = 2, label =  f"{int(meas.device['WL_L']*1e9)} nm")
-    
+
     heat_IDs.append(meas.meas_attrs["IDMeasurement"])
     if meas.datasets[0][1][-1] > 3:
         continue
