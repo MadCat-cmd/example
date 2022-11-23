@@ -36,13 +36,13 @@ connex.connect("1q2w3e4r")# enter pw here
 # wafernames = ["MPW22#53", "MPW22#54", "MPW22#55"]
 # wafernames = ["DONNY3#26", "DONNY3#27"]
 wafernames = ["DONNY3#113", "DONNY3#114"]
-wafernames = ['MPW25#101']
+#wafernames = ['MPW25#101']
 # wafernames = ["LUCA#40", "LUCA#41"]
 # wafernames = ["MPW23#81", "MPW23#84", "MPW23#85"]
 # wafernames = ["MPW24#90", "MPW24#93", "MPW24#94"]
 
 bar = "D_1"#"D_1" # DONNY3 "A_1" #'A_3' #23 #LUCA:"B_9"#22:"A_1" #"D_5" #21: D_4
-bar = "A_3"
+#bar = "A_3"
 # date = '21-07-15' #'21-03-30' # 21-03-26
 date = ''
 
@@ -132,7 +132,7 @@ for filename in filenames:
 # wafers= ["MPW23#81", "MPW23#84", "MPW23#85"]
 # wafers = ["MPW24#90", "MPW24#93", "MPW24#94"]
 wafers = ["DONNY3#113", "DONNY3#114"]
-wafers = ["MPW25#101"]
+#wafers = ["MPW25#101"]
 
 # wafers= ["DONNY3#26", "DONNY3#27"]
 
@@ -185,6 +185,8 @@ for mm, meas in enumerate(VIs):
     # ax_twin.plot(eva.datasets[0][0]*1e3,eva.datasets[0][1],
     #              color=cm.magma((mm)/len(VIs)), linewidth = 2, 
     #              label = f"{np.round(eva.eval_attrs['Rs'][0], 2)} Ω") #label =  f"{int(meas.device['WL_L']*1e6)} nm")
+
+plt.legend()
 plt.show()
 
 print("mean:")
@@ -220,7 +222,9 @@ heat_IDs = []
 wafers= ["MPW23#81"]#, "MPW23#84", "MPW23#85"]
 wafers = ["MPW24#90", "MPW24#93", "MPW24#94"]
 wafers= ["DONNY3#26", "DONNY3#27"]
-wafers = ["MPW22#54", "MPW22#55"]
+#wafers = ["MPW22#54", "MPW22#55"]
+
+wafers = ["DONNY3#113", "DONNY3#114"]
 
 
 fig = plt.figure()
@@ -256,7 +260,8 @@ for mm, meas in enumerate(heater_VIs):
     #         print(f"invalid data point at {np.round(meas.datasets[0][0][vv]*1e3,1)} mA, will interpolate between previous and following value")
     #         meas.datasets[0][1][vv] = (meas.datasets[0][1][vv-1] + meas.datasets[0][1][vv+1])/2
             
-    
+ plt.show()
+
 handles, labels = plt.gca().get_legend_handles_labels()
 by_label = dict(sorted(zip(labels, handles), key = lambda t: t[0]))
 ax.legend(by_label.values(), by_label.keys())
@@ -343,7 +348,8 @@ for mm, meas in enumerate(PIs):
     eva.compute()
     
     # ax.scatter(eva.eval_attrs["Ith"][0]*1e3, 1 ,s = 1e7, color=cm.gist_ncar(np.round(int(meas.device['WL_L']*1e6)-1520)/85, 2), linewidth = 2, marker = "|") #label =  f"{int(meas.device['WL_L']*1e6)} nm")
-      
+
+plt.show()
     
 handles, labels = plt.gca().get_legend_handles_labels()
 by_label = dict(sorted(zip(labels, handles), key = lambda t: t[0]))
@@ -414,7 +420,8 @@ for mm, meas in enumerate(PIs):
     eva.compute()
     
     # ax.scatter(eva.eval_attrs["Ith"][0]*1e3, 1 ,s = 1e7, color=cm.gist_ncar(np.round(int(meas.device['WL_L']*1e6)-1520)/85, 2), linewidth = 2, marker = "|") #label =  f"{int(meas.device['WL_L']*1e6)} nm")
-      
+
+plt.show()
     
 handles, labels = plt.gca().get_legend_handles_labels()
 by_label = dict(sorted(zip(labels, handles), key = lambda t: t[0]))
@@ -514,6 +521,8 @@ for mm, meas in enumerate(AIs):
                 s = 1e5,
                 linestyle = "-.")    
 
+plt.show()
+
 handles, labels = plt.gca().get_legend_handles_labels()
 by_label = dict(sorted(zip(labels, handles), key = lambda t: t[0]))
 ax.legend(by_label.values(), by_label.keys())
@@ -590,7 +599,7 @@ for mm, meas in enumerate(AIs):
     
     
    
-    
+plt.show()
     
     
 # ax.set_ylim([0.2,1.31])    
@@ -691,7 +700,9 @@ for mm, meas in enumerate(AIs):
     #         ax.scatter(meas.datasets[0][0][vv]*1e3,meas.datasets[0][1][vv],color="r", linewidth = 5, marker = "o")
     #         print(f"invalid data point at {np.round(meas.datasets[0][0][vv]*1e3,1)} mA, will interpolate between previous and following value")
     #         meas.datasets[0][1][vv] = (meas.datasets[0][1][vv-1] + meas.datasets[0][1][vv+1])/2
-            
+
+plt.show()
+
 # ax.set_ylim([0.2,0.7])
 
 handles, labels = plt.gca().get_legend_handles_labels()
@@ -775,7 +786,8 @@ for mm, meas in enumerate(PIs_DFB_left):
             ax.scatter(meas.datasets[0][0][vv]*1e3,meas.datasets[0][1][vv],color="r", linewidth = 5, marker = "o")
             print(f"invalid data point at {np.round(meas.datasets[0][0][vv]*1e3,1)} mA, will interpolate between previous and following value")
             meas.datasets[0][1][vv] = (meas.datasets[0][1][vv-1] + meas.datasets[0][1][vv+1])/2
-            
+
+plt.show()
     
 # ax.set_xlim([70,150])
 # ax.set_ylim([0,2.9])
@@ -893,7 +905,7 @@ for mm, meas in enumerate(AIs):
 #             print(f"invalid data point at {np.round(meas.datasets[0][0][vv]*1e3,1)} mA, will interpolate between previous and following value")
 #             meas.datasets[0][1][vv] = (meas.datasets[0][1][vv-1] + meas.datasets[0][1][vv+1])/2
             
-
+plt.show()
 
 handles, labels = plt.gca().get_legend_handles_labels()
 by_label = dict(sorted(zip(labels, handles), key = lambda t: t[0]))
