@@ -55,7 +55,7 @@ maskset_obj.read_from_gds(path_to_gds)
 # Mask = masksets.read_from_sql("MPW22", connex)
 
 # ChipUT = [Chip for Chip in Mask.chips if Chip["IDChip"] == 5108 ][0] #MPW21: 4798
-wafername = "MPW26#120"
+wafername = "MPW26#121"
 
 operator = "heibach"
 station = "PIC_Lab1"
@@ -64,7 +64,7 @@ temp = 20
 
 laser_currents = np.arange(0.5,150.1,0.5)*1e-3 #A
 heater_currents = np.arange(0.5,50.1,0.5)*1e-3 #A
-pd_vi_voltages = np.arange(-3,2.001, 0.02)
+pd_vi_voltages = np.arange(.02,2.001, 0.02)
 sweep_params = {"las_start":laser_currents[0]*1e6, 
                 "las_num":len(laser_currents), 
                 "las_step" :(laser_currents[1]-laser_currents[0])*1e6,
@@ -80,7 +80,7 @@ PD_responsivity = 0.8 #A/W assumed
 
 #get devices from DB:
 ########
-bar = 'C_4'
+bar = 'B_2'
 Mask = masksets.read_from_sql_al(wafername.split("#")[0], connex)
 DFB_init = [dev for dev in Mask.devices if (dev["DeviceType"] == "HHI_DFB" and dev["Bar"] == bar)][0]
 # DFB_init = devices.get_device_fromIDs([373161], connex)[0]
@@ -133,7 +133,7 @@ mover = pympw.Mover(connex, DFB_init, xps, offset_angle = offset_angle)
 
 # ip_PIConnect =      '172.16.32.233'
 # ip_PIConnect =     '172.16.32.129'
-ip_PIConnect =     '172.16.32.218'
+ip_PIConnect =     '172.16.32.236'
 
 pcx = HHI_PIConnect(ip_PIConnect)
 pcx.output(0)
@@ -255,7 +255,7 @@ auto = True
 time_start = time.time()
 measlist = []
 start_ind = 0
-for dd, MS in enumerate(MeasStrucs[16:]):
+for dd, MS in enumerate(MeasStrucs[32:]):
     
     DFB = MS.DFB
     DFB_ID = DFB['IDDevice']
@@ -359,7 +359,7 @@ for dd, MS in enumerate(MeasStrucs[16:]):
         if meas.meas_attrs["MeasurementType"] in ["vi", "pi"]:
             if "ref" in str(meas.meas_attrs["Comments"]) and "refl" not in str(meas.meas_attrs["Comments"]):
                 meas.meas_attrs["Comments"] += ", WV"
-        if meas.meas_attrs["MeasurementType"] in ["vi"] and "HEATER" not in str(meas.meas_attrs["Comments"]):
+        if meas.meas_attrs["MeasurementType"] in ["vi"] and "HEATER" not in str(meas.meas_attrs["Comments"]) and meas.meas_attrs["Comments"] != "pd vi":
             meas.meas_attrs["Comments"] = "WV"
     ############################################################################################
     ######### Heater vi ##############################################################
@@ -392,6 +392,20 @@ for dd, MS in enumerate(MeasStrucs[16:]):
         MS.measurements[1].datasets.append([heater_currents, heater_voltages, ])
     
         plt.plot(MS.measurements[1].datasets[0][0], MS.measurements[1].datasets[0][1])
+        
+    ###################################################################
+    #########PD VI##############################################
+    
+    if MS.measurements[-1].meas_attrs["Comments"] == "pd vi":
+        pcx.output(1)
+        time.sleep(0.2)
+        sweep_result = pcx.device.setgetSweep("vs" + MS.channels["PDREF"]["Source_Number"],
+                                              sweep_params["pd_start"], sweep_params["pd_step"], sweep_params["pd_num"], 5,
+                                              "vs" + MS.channels["PDREF"]["Source_Number"])
+        pd_vi_currents = np.array(sweep_result[0])
+        MS.measurements[-1].datasets.append([pd_vi_currents*1e-6, pd_vi_voltages, ])
+        pcx.output(0)
+    
     ############################################################################################
     ############ SOA ai ################################################################
         
@@ -464,6 +478,11 @@ for dd, MS in enumerate(MeasStrucs[16:]):
     ax.grid(True)
     
     # ax_twin.set_ylim([-10,10])
+    fig, ax = plt.subplots()
+    ax.set_title("PD VI")
+    ax.set_xlabel("Voltage [V]")
+    ax.set_ylabel("Current [mA]")
+    ax.plot(pd_vi_voltages, pd_vi_currents, color = plt.cm.viridis(.5))
     
     fig = plt.figure()
     
@@ -503,26 +522,27 @@ for dd, MS in enumerate(MeasStrucs[16:]):
     
     ############################################################################################
     ############### save ################################################################
-    for meas in MS.measurements:
-        
-    #for meas in [meas_wgt_ai]:    
-        filename = meas.device['DeviceName'] + '_' + str(meas.meas_attrs['Comments'])+ '_'
-        meas.meas_attrs["Station"] = "PIC_Lab1"
-        if check == '':
-            meas.write_sql()
-        measlist.append(meas.meas_attrs["IDMeasurement"])
-        MeasIDs.append(meas.meas_attrs["IDMeasurement"])
-        
-        if "WV" in meas.meas_attrs["Comments"]:
-            try:
-                ev = evaluations.Evaluation(connex, eval_type = meas.meas_attrs["MeasurementType"])
-                ev.measurement = meas
-                ev.compute()
-                ev.write_sql()
-            except:
-                print("Evaluation Error!")   
+    if True:
+        for meas in MS.measurements:
             
-        meas.write_file(path_to_save, filename)
+        #for meas in [meas_wgt_ai]:    
+            filename = meas.device['DeviceName'] + '_' + str(meas.meas_attrs['Comments'])+ '_'
+            meas.meas_attrs["Station"] = "PIC_Lab1"
+            if check == '':
+                meas.write_sql_al(connex)
+            measlist.append(meas.meas_attrs["IDMeasurement"])
+            MeasIDs.append(meas.meas_attrs["IDMeasurement"])
+            
+            if "WV" in meas.meas_attrs["Comments"]:
+                try:
+                    ev = evaluations.Evaluation(connex, eval_type = meas.meas_attrs["MeasurementType"])
+                    ev.measurement = meas
+                    ev.compute()
+                    ev.write_sql()
+                except:
+                    print("Evaluation Error!")   
+                
+            meas.write_file(path_to_save, filename)
     
     # #%%DBcheck
     

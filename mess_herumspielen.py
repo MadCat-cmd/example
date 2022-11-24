@@ -64,3 +64,25 @@ for dev in ChipUT.devices:
 for DFB in DFB_init:
     print(DFB.get_chip())
 
+#%%
+a_meas = measurements.read_measurement_sql() #return list mit Länge von 1??
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
