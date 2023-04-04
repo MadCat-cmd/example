@@ -8,10 +8,15 @@ Created on Wed Jan 18 12:52:50 2023
 
 from foubase import connection, measurements, devices
 
-connex = connection.Mysql_Connection("foubase","heibach")
-connex.connect()
+#connex = connection.Mysql_Connection("foubase","heibach")
+#connex.connect()
 
-
+username = 'chen'
+host = "172.16.29.181"
+name_db='foubase'
+connex = connection.Mysql_Connection(username=username, host=host, name_db=name_db) # OR jones gets his own DB account
+#connex.connect("1234")# enter pw here
+connex.connect("1q2w3e4r")# enter pw here
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -73,3 +78,5 @@ for i,d in enumerate(devs_comp[32:33]):
     if c ==0 and r ==0:
         handles = [Line2D([0],[0], color = plt.cm.viridis(0.2), label = "1st Sweep"), Line2D([0],[0], color = plt.cm.viridis(0.5), linestyle = "dotted", linewidth = 2.5,label = "2nd Sweep"), plt.scatter([0],[0], color = "r", marker = "x", label = "Device Position")]
         ax[r,c].legend(handles = handles, loc = "upper left")
+
+    plt.show()
